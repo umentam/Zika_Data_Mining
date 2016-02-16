@@ -1,0 +1,14 @@
+library(streamR)
+library(xlsx)
+load(file.path("C:","Users","Kevin's","Documents","my_oauth.Rdata"))
+date<-Sys.Date()
+strDates<-as.character(date)
+filterStream(file.name = paste(strDates,"tweets.json"), # Save tweets in a json file
+             track = c("zika", "zika virus"), # Collect tweets mentioning either zika or zika virus
+             language = "en",
+             timeout = 120, # Keep connection alive for 120 seconds
+             oauth = my_oauth) # Use my_oauth file as the OAuth credentials
+
+
+tweets.df <- parseTweets(paste(strDates,"tweets.json"), simplify = FALSE) # parse the json file and save to a data frame called tweets.df. Simplify = FALSE ensures that we include lat/lon information
+write.xlsx(tweets.df, file.path("C:","Users","Kevin's","Documents","tweets","Excel Files",paste(strDates,"tweets.xlsx"))) #writes the data to an excel file
