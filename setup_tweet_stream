@@ -1,0 +1,24 @@
+library(streamR)
+library(RCurl)
+library(RJSONIO)
+library(stringr)
+
+library(ROAuth)
+requestURL <- "https://api.twitter.com/oauth/request_token"
+accessURL <- "https://api.twitter.com/oauth/access_token"
+authURL <- "https://api.twitter.com/oauth/authorize"
+consumerKey <- "aT0MOoGlQLuLuXsrhYgK5b2Ls" # From dev.twitter.com
+consumerSecret <- "IiA3WrDFUK3VEKTZtB9knmMMpnPHsUSG5lHrC0o71RFahgWybF" # From dev.twitter.com
+
+my_oauth <- OAuthFactory$new(consumerKey = consumerKey,
+                             consumerSecret = consumerSecret,
+                             requestURL = requestURL,
+                             accessURL = accessURL,
+                             authURL = authURL)
+
+my_oauth$handshake(cainfo = system.file("CurlSSL", "cacert.pem", package = "RCurl"))
+
+### STOP HERE!!! ###
+
+# PART 2: Save the my_oauth data to an .Rdata file
+save(my_oauth, file = "my_oauth.Rdata")
