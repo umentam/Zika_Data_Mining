@@ -1,0 +1,27 @@
+#Load repositories you may need to download them using install.packages("name")
+library(twitteR)
+library(xlsx)
+#Input API and keys from twitter
+api_key <- "aT0MOoGlQLuLuXsrhYgK5b2Ls" # From dev.twitter.com
+api_secret <- "IiA3WrDFUK3VEKTZtB9knmMMpnPHsUSG5lHrC0o71RFahgWybF" # From dev.twitter.com
+token <- "55406984-QSRr9WQWOVoCWuHu7SY7bZwTdS6y568w4mHUmsRXM" # From dev.twitter.com
+token_secret <- "6N8WSe9BpA9ZT81Oxk2KBMhopkgZ6eUYohulZAKR9F196" # From dev.twitter.com
+
+#Create Twitter Connection
+setup_twitter_oauth(api_key, api_secret, token, token_secret)
+#initalize a data frame for the tweets
+df.tweet<- list()
+date<-Sys.Date()
+strDates<-as.character(date)
+
+#for loop is for iterations but doesn't really work for more than 1 request
+for(i in 1:1){
+  #Search twitter for tweets 
+    tweets_geolocated<- searchTwitter("zika virus", n=60, lang="en", geocode='35.4822,-97.935,1320mi', since="2016-02-06", retryOnRateLimit=60)
+   #make a list of the tweets 
+    combined_tweets[i]<-list(tweets_geolocated)
+  #Make a list composed of dataframes of tweets 
+    df.tweet[[i]] <- twListToDF(combined_tweets[[i]])
+   #Write each dataframe to a separate excel file
+    write.xlsx(df.tweet[i], file.path("C:","Users","Kevin's","Documents","tweets","Excel Files",paste(i,strDates,"tweets.xlsx")))
+}
